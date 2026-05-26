@@ -84,7 +84,6 @@ export function AdminPanel({
   const [loadingEnquiries, setLoadingEnquiries] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState<"enquiries" | "reviews" | "services" | "news" | "bankrates">("enquiries");
 
-  const [googleUser, setGoogleUser] = useState<any>(null);
   const [googleLoading, setGoogleLoading] = useState(false);
 
   // Bank Rates adding / editing states
@@ -225,17 +224,6 @@ export function AdminPanel({
     }
   };
 
-  // Auth observer
-  useEffect(() => {
-    if (!auth) return;
-    const unsubscribe = auth.onAuthStateChanged((user: any) => {
-      setGoogleUser(user);
-      if (user && user.email === "abhinavkrishna3071@gmail.com") {
-        onSetAdminActive(true);
-      }
-    });
-    return () => unsubscribe();
-  }, [onSetAdminActive]);
 
   // Fetch enquiries if Admin is authorized
   const loadEnquiries = async () => {
@@ -258,8 +246,8 @@ export function AdminPanel({
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Default security passcode is 2026
-    if (passcode === "husky@123") {
+    // Default security passcode is 2026, fallback husky@123 is also accepted
+    if (passcode === "2026" || passcode === "husky@123") {
       onSetAdminActive(true);
       setErrorMsg("");
       setPasscode("");
@@ -287,7 +275,15 @@ export function AdminPanel({
       }
     } catch (err: any) {
       console.error(err);
-      setErrorMsg(err?.message || "Failed to sign in with Google.");
+      let errMsg = err?.message || "Failed to sign in with Google.";
+      if (
+        err?.code === "auth/unauthorized-domain" || 
+        errMsg.includes("unauthorized-domain") || 
+        errMsg.includes("auth/unauthorized-domain")
+      ) {
+        errMsg = "Google Sign-In failed: The current domain is not authorized in your Firebase Project. Please add this domain to the 'Authorized domains' list in the Firebase Console (under Authentication > Settings > Authorized domains).";
+      }
+      setErrorMsg(errMsg);
     } finally {
       setGoogleLoading(false);
     }

@@ -7,6 +7,7 @@ import { ServicesSection } from "./components/ServicesSection";
 import { NewsSection } from "./components/NewsSection";
 import { ContactSection } from "./components/ContactSection";
 import { AdminPanel } from "./components/AdminPanel";
+import { auth } from "./firebase";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Menu,
@@ -96,6 +97,17 @@ export default function App() {
     return sessionStorage.getItem("praveen_admin_active") === "true";
   });
 
+  // Global Auth Observer
+  useEffect(() => {
+    if (!auth) return;
+    const unsubscribe = auth.onAuthStateChanged((user: any) => {
+      if (user && user.email === "abhinavkrishna3071@gmail.com") {
+        handleSetAdminActive(true);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
   // Track dynamic data reads
   const loadDatabaseState = async () => {
     try {
@@ -119,7 +131,7 @@ export default function App() {
 
   useEffect(() => {
     loadDatabaseState();
-  }, []);
+  }, [isAdminActive]);
 
   // Language persistent switch
   const toggleLanguage = () => {
