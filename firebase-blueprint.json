@@ -1,0 +1,244 @@
+{
+  "entities": {
+    "Service": {
+      "title": "Service",
+      "description": "Financial service or custom mortgage portfolio option offered by Praveen Kumar",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the service item"
+        },
+        "titleEn": {
+          "type": "string",
+          "description": "Title of the service in English"
+        },
+        "titleMl": {
+          "type": "string",
+          "description": "Title of the service in Malayalam"
+        },
+        "descEn": {
+          "type": "string",
+          "description": "Short description of the service in English"
+        },
+        "descMl": {
+          "type": "string",
+          "description": "Short description of the service in Malayalam"
+        },
+        "detailEn": {
+          "type": "string",
+          "description": "Comprehensive details of the service in English"
+        },
+        "detailMl": {
+          "type": "string",
+          "description": "Comprehensive details of the service in Malayalam"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Lucide icon string name"
+        },
+        "custom": {
+          "type": "boolean",
+          "description": "Whether the service was added by an admin at runtime"
+        }
+      },
+      "required": [
+        "id",
+        "titleEn",
+        "titleMl",
+        "descEn",
+        "descMl",
+        "detailEn",
+        "detailMl",
+        "icon"
+      ]
+    },
+    "NewsItem": {
+      "title": "NewsItem",
+      "description": "Financial insights article or informative update on LIC/mortgage policies",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the news item"
+        },
+        "titleEn": {
+          "type": "string",
+          "description": "Title of the article in English"
+        },
+        "titleMl": {
+          "type": "string",
+          "description": "Title of the article in Malayalam"
+        },
+        "contentEn": {
+          "type": "string",
+          "description": "Comprehensive markdown content in English"
+        },
+        "contentMl": {
+          "type": "string",
+          "description": "Comprehensive markdown content in Malayalam"
+        },
+        "date": {
+          "type": "string",
+          "description": "Publication date in YYYY-MM-DD format"
+        },
+        "authorEn": {
+          "type": "string",
+          "description": "Author of the article in English"
+        },
+        "authorMl": {
+          "type": "string",
+          "description": "Author of the article in Malayalam"
+        },
+        "categoryEn": {
+          "type": "string",
+          "description": "Topic category in English"
+        },
+        "categoryMl": {
+          "type": "string",
+          "description": "Topic category in Malayalam"
+        },
+        "image": {
+          "type": "string",
+          "description": "Optional illustration image name/URI"
+        },
+        "custom": {
+          "type": "boolean",
+          "description": "Whether the article was custom written"
+        }
+      },
+      "required": [
+        "id",
+        "titleEn",
+        "titleMl",
+        "contentEn",
+        "contentMl",
+        "date",
+        "authorEn",
+        "authorMl",
+        "categoryEn",
+        "categoryMl"
+      ]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "User feedback, testimonial, and professional rating for Praveen Kumar",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the feedback submission"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the client who submitted rating"
+        },
+        "designationEn": {
+          "type": "string",
+          "description": "Profession/title of the reviewer in English"
+        },
+        "designationMl": {
+          "type": "string",
+          "description": "Profession/title of the reviewer in Malayalam"
+        },
+        "feedbackEn": {
+          "type": "string",
+          "description": "Review testimonial content in English"
+        },
+        "feedbackMl": {
+          "type": "string",
+          "description": "Review testimonial content in Malayalam"
+        },
+        "rating": {
+          "type": "number",
+          "description": "Numerical rating out of 5 stars"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date of rating submission"
+        },
+        "approved": {
+          "type": "boolean",
+          "description": "Whether the review is approved for public display"
+        },
+        "custom": {
+          "type": "boolean",
+          "description": "True if submitted dynamically by consumer"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "designationEn",
+        "designationMl",
+        "feedbackEn",
+        "feedbackMl",
+        "rating",
+        "date",
+        "approved"
+      ]
+    },
+    "ContactEnquiry": {
+      "title": "ContactEnquiry",
+      "description": "Consultation inquiry / mortgage request submitted by a prospective client",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Enquiry unique identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Customer name"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Registered direct callback telephone number"
+        },
+        "email": {
+          "type": "string",
+          "description": "Customer email identifier"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Topic / subject of the request"
+        },
+        "message": {
+          "type": "string",
+          "description": "Inquiry text details"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date and time of enquiry creation"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "phone",
+        "email",
+        "subject",
+        "message",
+        "date"
+      ]
+    }
+  },
+  "firestore": {
+    "services": {
+      "schema": "Service",
+      "description": "Collection of mortgage/financial consulting service objects"
+    },
+    "news": {
+      "schema": "NewsItem",
+      "description": "Collection of policy guidelines, articles and update insights"
+    },
+    "reviews": {
+      "schema": "Review",
+      "description": "Collection of client ratings and testimonial reviews"
+    },
+    "enquiries": {
+      "schema": "ContactEnquiry",
+      "description": "Registered contact/mortgage consultation entries from consumers"
+    }
+  }
+}

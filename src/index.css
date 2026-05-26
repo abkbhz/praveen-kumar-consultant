@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cinzel", Georgia, serif;
+  --font-sans: "Outfit", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-gold-50: #faf6eb;
+  --color-gold-100: #f5edd4;
+  --color-gold-200: #ebd8a4;
+  --color-gold-300: #dfbe6d;
+  --color-gold-400: #d4a342;
+  --color-gold-500: #c5862b;
+  --color-gold-600: #aa6b20;
+  --color-gold-700: #8c531a;
+  --color-gold-800: #6d3e15;
+  --color-gold-900: #4b2a0f;
+  
+  --animate-infinite-scroll: infinite-scroll 45s linear infinite;
+}
+
+@keyframes infinite-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f7f5f0;
+}
+::-webkit-scrollbar-thumb {
+  background: #dfbe6d;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c5862b;
+}
+

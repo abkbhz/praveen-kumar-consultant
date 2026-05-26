@@ -1,0 +1,115 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 1. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Reusable Helper Functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() &&
+             request.auth.token.email == "abhinavkrishna3071@gmail.com" &&
+             request.auth.token.email_verified == true;
+    }
+    
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    
+    // Entity Custom Validation Helpers
+    function isValidService(data) {
+      return data.keys().hasAll(['id', 'titleEn', 'titleMl', 'descEn', 'descMl', 'detailEn', 'detailMl', 'icon']) &&
+             data.keys().size() <= 10 &&
+             data.id is string && data.id.size() <= 100 &&
+             data.titleEn is string && data.titleEn.size() <= 200 &&
+             data.titleMl is string && data.titleMl.size() <= 200 &&
+             data.descEn is string && data.descEn.size() <= 1000 &&
+             data.descMl is string && data.descMl.size() <= 1000 &&
+             data.detailEn is string && data.detailEn.size() <= 10000 &&
+             data.detailMl is string && data.detailMl.size() <= 10000 &&
+             data.icon is string && data.icon.size() <= 100 &&
+             (!('custom' in data) || data.custom is bool);
+    }
+    
+    function isValidNews(data) {
+      return data.keys().hasAll(['id', 'titleEn', 'titleMl', 'contentEn', 'contentMl', 'date', 'authorEn', 'authorMl', 'categoryEn', 'categoryMl']) &&
+             data.keys().size() <= 12 &&
+             data.id is string && data.id.size() <= 100 &&
+             data.titleEn is string && data.titleEn.size() <= 250 &&
+             data.titleMl is string && data.titleMl.size() <= 250 &&
+             data.contentEn is string && data.contentEn.size() <= 20000 &&
+             data.contentMl is string && data.contentMl.size() <= 20000 &&
+             data.date is string && data.date.size() <= 30 &&
+             data.authorEn is string && data.authorEn.size() <= 100 &&
+             data.authorMl is string && data.authorMl.size() <= 100 &&
+             data.categoryEn is string && data.categoryEn.size() <= 100 &&
+             data.categoryMl is string && data.categoryMl.size() <= 100 &&
+             (!('image' in data) || data.image is string) &&
+             (!('custom' in data) || data.custom is bool);
+    }
+    
+    function isValidReview(data) {
+      return data.keys().hasAll(['id', 'name', 'designationEn', 'designationMl', 'feedbackEn', 'feedbackMl', 'rating', 'date', 'approved']) &&
+             data.keys().size() <= 11 &&
+             data.id is string && data.id.size() <= 100 &&
+             data.name is string && data.name.size() <= 150 &&
+             data.designationEn is string && data.designationEn.size() <= 150 &&
+             data.designationMl is string && data.designationMl.size() <= 150 &&
+             data.feedbackEn is string && data.feedbackEn.size() <= 2000 &&
+             data.feedbackMl is string && data.feedbackMl.size() <= 2000 &&
+             data.rating is number && data.rating >= 1 && data.rating <= 5 &&
+             data.date is string && data.date.size() <= 30 &&
+             data.approved is bool &&
+             (!('custom' in data) || data.custom is bool);
+    }
+    
+    function isValidEnquiry(data) {
+      return data.keys().hasAll(['id', 'name', 'phone', 'email', 'subject', 'message', 'date']) &&
+             data.keys().size() <= 7 &&
+             data.id is string && data.id.size() <= 100 &&
+             data.name is string && data.name.size() <= 150 &&
+             data.phone is string && data.phone.size() <= 30 &&
+             data.email is string && data.email.size() <= 150 &&
+             data.subject is string && data.subject.size() <= 250 &&
+             data.message is string && data.message.size() <= 5000 &&
+             data.date is string && data.date.size() <= 50;
+    }
+    
+    // Services rules
+    match /services/{serviceId} {
+      allow read, get, list: if true;
+      allow create, update, delete: if isAdmin() && isValidId(serviceId) && (request.method != 'delete' ? isValidService(request.resource.data) : true);
+    }
+    
+    // News rules
+    match /news/{newsId} {
+      allow read, get, list: if true;
+      allow create, update, delete: if isAdmin() && isValidId(newsId) && (request.method != 'delete' ? isValidNews(request.resource.data) : true);
+    }
+    
+    // Reviews rules
+    match /reviews/{reviewId} {
+      allow read, get, list: if true;
+      // Anyone can submit raw unapproved feedback
+      allow create: if isValidId(reviewId) &&
+                       isValidReview(request.resource.data) &&
+                       request.resource.data.approved == false;
+      // Only Admin can approve or delete
+      allow update, delete: if isAdmin() && isValidId(reviewId) && (request.method != 'delete' ? isValidReview(request.resource.data) : true);
+    }
+    
+    // Enquiries rules (Strict Privacy!)
+    match /enquiries/{enquiryId} {
+      // Anyone can submit consultation inquiry
+      allow create: if isValidId(enquiryId) && isValidEnquiry(request.resource.data);
+      // Only Admin can read, list, and handle/delete enquiries
+      allow read, get, list, update, delete: if isAdmin();
+    }
+  }
+}
