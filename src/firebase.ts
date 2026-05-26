@@ -11,7 +11,9 @@ let isFirebaseEnabled = false;
 if (firebaseConfig && firebaseConfig.apiKey && firebaseConfig.apiKey !== "") {
   try {
     app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-    db = getFirestore(app, firebaseConfig.firestoreDatabaseId || "(default)");
+    db = firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== "(default)"
+      ? getFirestore(app, firebaseConfig.firestoreDatabaseId)
+      : getFirestore(app);
     auth = getAuth(app);
     isFirebaseEnabled = true;
     console.log("Firebase initialized successfully with configuration.", firebaseConfig.projectId);
