@@ -98,7 +98,7 @@ export const dbStore = {
         }
         return data;
       } catch (error) {
-        handleFirestoreError(error, OperationType.GET, "services");
+        console.error("Firestore read error for services:", error);
         return [...localServices];
       }
     } else {
@@ -152,7 +152,7 @@ export const dbStore = {
         }
         return data.sort((a, b) => b.date.localeCompare(a.date));
       } catch (error) {
-        handleFirestoreError(error, OperationType.GET, "news");
+        console.error("Firestore read error for news:", error);
         return [...localNews];
       }
     } else {
@@ -206,7 +206,7 @@ export const dbStore = {
         }
         return data;
       } catch (error) {
-        handleFirestoreError(error, OperationType.GET, "reviews");
+        console.error("Firestore read error for reviews:", error);
         return [...localReviews];
       }
     } else {
@@ -274,7 +274,7 @@ export const dbStore = {
       try {
         return await fetchFirestoreCollection("enquiries");
       } catch (error) {
-        handleFirestoreError(error, OperationType.GET, "enquiries");
+        console.error("Firestore read error for enquiries:", error);
         return [...localEnquiries];
       }
     } else {
@@ -332,7 +332,7 @@ export const dbStore = {
         }
         return data;
       } catch (error) {
-        handleFirestoreError(error, OperationType.GET, "bankRates");
+        console.error("Firestore read error for bankRates:", error);
         return [...localBankRates];
       }
     } else {

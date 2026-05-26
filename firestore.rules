@@ -80,6 +80,20 @@ service cloud.firestore {
              data.message is string && data.message.size() <= 5000 &&
              data.date is string && data.date.size() <= 50;
     }
+
+    function isValidBankRate(data) {
+      return data.keys().hasAll(['id', 'bankNameEn', 'bankNameMl', 'interestRate', 'maxTenureEn', 'maxTenureMl', 'processingFeeEn', 'processingFeeMl', 'updatedAt']) &&
+             data.keys().size() <= 9 &&
+             data.id is string && data.id.size() <= 100 &&
+             data.bankNameEn is string && data.bankNameEn.size() <= 150 &&
+             data.bankNameMl is string && data.bankNameMl.size() <= 150 &&
+             data.interestRate is string && data.interestRate.size() <= 50 &&
+             data.maxTenureEn is string && data.maxTenureEn.size() <= 100 &&
+             data.maxTenureMl is string && data.maxTenureMl.size() <= 100 &&
+             data.processingFeeEn is string && data.processingFeeEn.size() <= 200 &&
+             data.processingFeeMl is string && data.processingFeeMl.size() <= 200 &&
+             data.updatedAt is string && data.updatedAt.size() <= 30;
+    }
     
     // Services rules
     match /services/{serviceId} {
@@ -110,6 +124,12 @@ service cloud.firestore {
       allow create: if isValidId(enquiryId) && isValidEnquiry(request.resource.data);
       // Only Admin can read, list, and handle/delete enquiries
       allow read, get, list, update, delete: if isAdmin();
+    }
+
+    // BankRates rules
+    match /bankRates/{rateId} {
+      allow read, get, list: if true;
+      allow create, update, delete: if isAdmin() && isValidId(rateId) && (request.method != 'delete' ? isValidBankRate(request.resource.data) : true);
     }
   }
 }
