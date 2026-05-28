@@ -85,7 +85,7 @@ export function ServicesSection({
       {/* Details Modal Overlay */}
       {selectedService && (
         <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fadeIn">
-          <div className="bg-white rounded-2xl max-w-2xl w-full border border-stone-200 shadow-2xl relative overflow-hidden flex flex-col max-h-[85vh]">
+          <div className="bg-white rounded-2xl max-w-3xl w-full border border-stone-200 shadow-2xl relative overflow-hidden flex flex-col max-h-[85vh]">
             
             {/* Elegant Header Band */}
             <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-amber-500 via-stone-800 to-amber-600" />
@@ -127,9 +127,11 @@ export function ServicesSection({
                   {lang === "en" ? "PROCEDURE & DOCUMENTATION INFO" : "കൂടുതൽ വിവരങ്ങളും ഫയൽ ആവശ്യകതകളും"}
                 </h4>
                 
-                <p className="text-stone-600 font-light leading-relaxed text-[15px]">
-                  {lang === "en" ? selectedService.detailEn : selectedService.detailMl}
-                </p>
+                <div className="max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
+                  <p className="text-stone-600 font-light leading-relaxed text-[15px] whitespace-pre-wrap break-words">
+                    {lang === "en" ? selectedService.detailEn : selectedService.detailMl}
+                  </p>
+                </div>
 
                 {/* Additional list bullets */}
                 <div className="bg-amber-50/20 border border-amber-200/20 p-5 rounded-xl space-y-3 mt-4">

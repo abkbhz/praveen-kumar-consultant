@@ -1,9 +1,10 @@
 {
-  "apiKey": "",
-  "authDomain": "",
-  "projectId": "",
-  "storageBucket": "",
-  "messagingSenderId": "",
-  "appId": "",
-  "firestoreDatabaseId": ""
+  "projectId": "praveen-kumar-consultant",
+  "appId": "1:519761512307:web:d5cd7ead9d92ca5afbe706",
+  "apiKey": "AIzaSyDzH7g5-gvow8fmyc0BHhBYQEegWb039Tk",
+  "authDomain": "praveen-kumar-consultant.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "praveen-kumar-consultant.firebasestorage.app",
+  "messagingSenderId": "519761512307",
+  "measurementId": "G-S99JHMMR40"
 }

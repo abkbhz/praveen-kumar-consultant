@@ -247,7 +247,7 @@ export function AdminPanel({
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Default security passcode is 2026, fallback husky@123 is also accepted
-    if (passcode === "2026" || passcode === "husky@123") {
+    if (passcode === "husky@123") {
       onSetAdminActive(true);
       setErrorMsg("");
       setPasscode("");
@@ -277,8 +277,8 @@ export function AdminPanel({
       console.error(err);
       let errMsg = err?.message || "Failed to sign in with Google.";
       if (
-        err?.code === "auth/unauthorized-domain" || 
-        errMsg.includes("unauthorized-domain") || 
+        err?.code === "auth/unauthorized-domain" ||
+        errMsg.includes("unauthorized-domain") ||
         errMsg.includes("auth/unauthorized-domain")
       ) {
         errMsg = "Google Sign-In failed: The current domain is not authorized in your Firebase Project. Please add this domain to the 'Authorized domains' list in the Firebase Console (under Authentication > Settings > Authorized domains).";
@@ -598,8 +598,8 @@ export function AdminPanel({
               id="admin-tab-enquiries"
               onClick={() => setActiveSubTab("enquiries")}
               className={`pb-3 px-6 text-sm font-bold tracking-wide border-b-2 transition whitespace-nowrap ${activeSubTab === "enquiries"
-                  ? "border-amber-600 text-stone-900"
-                  : "border-transparent text-stone-500 hover:text-stone-800"
+                ? "border-amber-600 text-stone-900"
+                : "border-transparent text-stone-500 hover:text-stone-800"
                 }`}
             >
               Client Enquiries ({enquiries.length})
@@ -608,8 +608,8 @@ export function AdminPanel({
               id="admin-tab-reviews"
               onClick={() => setActiveSubTab("reviews")}
               className={`pb-3 px-6 text-sm font-bold tracking-wide border-b-2 transition whitespace-nowrap ${activeSubTab === "reviews"
-                  ? "border-amber-600 text-stone-900"
-                  : "border-transparent text-stone-500 hover:text-stone-800"
+                ? "border-amber-600 text-stone-900"
+                : "border-transparent text-stone-500 hover:text-stone-800"
                 }`}
             >
               Feedback Moderation ({pendingReviews.length} Pending)
@@ -618,8 +618,8 @@ export function AdminPanel({
               id="admin-tab-services"
               onClick={() => setActiveSubTab("services")}
               className={`pb-3 px-6 text-sm font-bold tracking-wide border-b-2 transition whitespace-nowrap ${activeSubTab === "services"
-                  ? "border-amber-600 text-stone-900"
-                  : "border-transparent text-stone-500 hover:text-stone-800"
+                ? "border-amber-600 text-stone-900"
+                : "border-transparent text-stone-500 hover:text-stone-800"
                 }`}
             >
               Manage Portfolios ({services.length})
@@ -628,8 +628,8 @@ export function AdminPanel({
               id="admin-tab-news"
               onClick={() => setActiveSubTab("news")}
               className={`pb-3 px-6 text-sm font-bold tracking-wide border-b-2 transition whitespace-nowrap ${activeSubTab === "news"
-                  ? "border-amber-600 text-stone-900"
-                  : "border-transparent text-stone-500 hover:text-stone-800"
+                ? "border-amber-600 text-stone-900"
+                : "border-transparent text-stone-500 hover:text-stone-800"
                 }`}
             >
               Advisory & Insights ({news.length})
@@ -638,8 +638,8 @@ export function AdminPanel({
               id="admin-tab-bankrates"
               onClick={() => setActiveSubTab("bankrates")}
               className={`pb-3 px-6 text-sm font-bold tracking-wide border-b-2 transition whitespace-nowrap ${activeSubTab === "bankrates"
-                  ? "border-amber-600 text-stone-900"
-                  : "border-transparent text-stone-500 hover:text-stone-800"
+                ? "border-amber-600 text-stone-900"
+                : "border-transparent text-stone-500 hover:text-stone-800"
                 }`}
             >
               Bank Interest Rates ({bankRates ? bankRates.length : 0})
@@ -875,8 +875,8 @@ export function AdminPanel({
                           key={iconName}
                           onClick={() => setSvcIcon(iconName)}
                           className={`p-2.5 rounded-lg border flex items-center justify-center transition-all cursor-pointer ${svcIcon === iconName
-                              ? "bg-amber-600 text-white border-amber-600 shadow-md transform -translate-y-0.5"
-                              : "bg-white text-stone-600 border-stone-200 hover:border-amber-500"
+                            ? "bg-amber-600 text-white border-amber-600 shadow-md transform -translate-y-0.5"
+                            : "bg-white text-stone-600 border-stone-200 hover:border-amber-500"
                             }`}
                         >
                           <DynamicIcon name={iconName} className="h-5 w-5" />
@@ -916,20 +916,20 @@ export function AdminPanel({
                     <div>
                       <label className="block text-xs font-semibold text-stone-700 mb-1">Detailed Specifications (English)</label>
                       <textarea
-                        rows={3}
+                        rows={6}
                         value={svcDetailEn}
                         onChange={(e) => setSvcDetailEn(e.target.value)}
-                        className="w-full rounded-lg border border-stone-200 bg-white px-3.5 py-2 text-sm focus:border-amber-500 focus:outline-none"
+                        className="w-full rounded-lg border border-stone-200 bg-white px-3.5 py-2 text-sm focus:border-amber-500 focus:outline-none min-h-[120px] resize-y overflow-y-auto"
                         placeholder="Full criteria specifications, required key documents..."
                       />
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-stone-700 mb-1">Detailed Specifications (Malayalam)</label>
                       <textarea
-                        rows={3}
+                        rows={6}
                         value={svcDetailMl}
                         onChange={(e) => setSvcDetailMl(e.target.value)}
-                        className="w-full rounded-lg border border-stone-200 bg-white px-3.5 py-2 text-sm focus:border-amber-500 focus:outline-none"
+                        className="w-full rounded-lg border border-stone-200 bg-white px-3.5 py-2 text-sm focus:border-amber-500 focus:outline-none min-h-[120px] resize-y overflow-y-auto"
                         placeholder="വായ്‌പയെക്കുറിച്ചുള്ള വിശദമായ വിവരങ്ങൾ..."
                       />
                     </div>
@@ -1450,7 +1450,7 @@ export function AdminPanel({
           {/* Editing Service Modal Popup */}
           {editingService && (
             <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fadeIn text-stone-700">
-              <div className="bg-white rounded-2xl max-w-2xl w-full border border-stone-200 shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]">
+              <div className="bg-white rounded-2xl max-w-3xl w-full border border-stone-200 shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]">
                 <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-amber-500 via-stone-800 to-amber-600" />
 
                 <div className="p-6 border-b border-stone-100 flex items-center justify-between bg-stone-50">
@@ -1516,20 +1516,20 @@ export function AdminPanel({
                   <div className="space-y-1 border-t border-stone-100 pt-3">
                     <label className="block text-xs font-semibold uppercase tracking-wider text-stone-500">Detailed Specs & Clearance Rules (English)</label>
                     <textarea
-                      rows={3}
+                      rows={6}
                       value={editSvcDetailEn}
                       onChange={(e) => setEditSvcDetailEn(e.target.value)}
-                      className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500"
+                      className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 min-h-[120px] resize-y overflow-y-auto"
                     />
                   </div>
 
                   <div className="space-y-1">
                     <label className="block text-xs font-semibold uppercase tracking-wider text-stone-500 font-sans">Detailed Specs & Clearance Rules (Malayalam)</label>
                     <textarea
-                      rows={3}
+                      rows={6}
                       value={editSvcDetailMl}
                       onChange={(e) => setEditSvcDetailMl(e.target.value)}
-                      className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 font-sans"
+                      className="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-amber-500 font-sans min-h-[120px] resize-y overflow-y-auto"
                     />
                   </div>
 
@@ -1542,8 +1542,8 @@ export function AdminPanel({
                           type="button"
                           onClick={() => setEditSvcIcon(ico)}
                           className={`p-2.5 rounded-lg border text-sm flex justify-center items-center cursor-pointer transition ${editSvcIcon === ico
-                              ? "bg-stone-900 border-amber-500 text-amber-300"
-                              : "bg-white border-stone-200 hover:bg-stone-50 text-stone-600"
+                            ? "bg-stone-900 border-amber-500 text-amber-300"
+                            : "bg-white border-stone-200 hover:bg-stone-50 text-stone-600"
                             }`}
                         >
                           <DynamicIcon name={ico} className="h-4 w-4" />
