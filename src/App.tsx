@@ -101,7 +101,7 @@ export default function App() {
   useEffect(() => {
     if (!auth) return;
     const unsubscribe = auth.onAuthStateChanged((user: any) => {
-      if (user && user.email === "abhinavkrishna3071@gmail.com") {
+      if (user && user.email === "licpravi@gmail.com") {
         handleSetAdminActive(true);
       }
     });
