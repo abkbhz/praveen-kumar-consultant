@@ -3,7 +3,7 @@ import { Language, Review, ContactEnquiry, Service, NewsItem, BankRate } from ".
 import { TRANSLATIONS } from "../data";
 import { dbStore } from "../dbStore";
 import { auth, isFirebaseEnabled } from "../firebase";
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut, signInWithEmailAndPassword } from "firebase/auth";
 import { DynamicIcon } from "./DynamicIcon";
 import {
   Lock,
@@ -77,8 +77,9 @@ export function AdminPanel({
 }: AdminPanelProps) {
   const t = TRANSLATIONS[lang];
 
-  // Passcode entry state
-  const [passcode, setPasscode] = useState("");
+  // Email & Password entry states
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [enquiries, setEnquiries] = useState<ContactEnquiry[]>([]);
   const [loadingEnquiries, setLoadingEnquiries] = useState(false);
@@ -244,15 +245,37 @@ export function AdminPanel({
     }
   }, [isAdminActive]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Default security passcode is 2026, fallback husky@123 is also accepted
-    if (passcode === "2026" || passcode === "husky@123") {
+
+    // Passcode fallback if they only type passcode (for offline demo mode)
+    if (!email && (password === "2026" || password === "husky@123")) {
       onSetAdminActive(true);
       setErrorMsg("");
-      setPasscode("");
-    } else {
-      setErrorMsg(t.wrongPasscode);
+      setPassword("");
+      return;
+    }
+
+    if (!auth) {
+      setErrorMsg("Firebase is disabled or not set up.");
+      return;
+    }
+
+    setErrorMsg("");
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      if (user?.email === "abhinavkrishna3071@gmail.com" || user?.email === "licpravi@gmail.com") {
+        onSetAdminActive(true);
+        setEmail("");
+        setPassword("");
+      } else {
+        setErrorMsg("Unauthorized account.");
+        await signOut(auth);
+      }
+    } catch (err: any) {
+      console.error(err);
+      setErrorMsg(err?.message || "Failed to sign in. Please verify your credentials.");
     }
   };
 
@@ -507,19 +530,35 @@ export function AdminPanel({
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-stone-700 mb-1">
-                {t.passcodeLabel} (Try <strong className="text-amber-800">2026</strong>)
-              </label>
-              <input
-                id="admin-passcode-input"
-                type="password"
-                required
-                value={passcode}
-                onChange={(e) => setPasscode(e.target.value)}
-                className="w-full rounded-lg border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-center text-lg tracking-[0.4em] font-mono font-bold focus:border-amber-500 focus:bg-white focus:outline-none"
-                placeholder="••••"
-              />
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-semibold text-stone-700 mb-1">
+                  Administrator Email
+                </label>
+                <input
+                  id="admin-email-input"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-lg border border-stone-200 bg-stone-50 px-3.5 py-2 text-sm focus:border-amber-500 focus:bg-white focus:outline-none"
+                  placeholder="e.g. licpravi@gmail.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-stone-700 mb-1">
+                  Password / Passcode *
+                </label>
+                <input
+                  id="admin-password-input"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-lg border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm focus:border-amber-500 focus:bg-white focus:outline-none"
+                  placeholder="••••••••"
+                />
+              </div>
             </div>
 
             {errorMsg && (
