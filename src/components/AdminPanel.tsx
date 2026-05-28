@@ -265,7 +265,7 @@ export function AdminPanel({
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      if (user?.email === "licpravi@gmail.com") {
+      if (user?.email === "abhinavkrishna3071@gmail.com" || user?.email === "licpravi@gmail.com") {
         onSetAdminActive(true);
         setEmail("");
         setPassword("");
@@ -290,10 +290,10 @@ export function AdminPanel({
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      if (user?.email === "licpravi@gmail.com") {
+      if (user?.email === "abhinavkrishna3071@gmail.com" || user?.email === "licpravi@gmail.com") {
         onSetAdminActive(true);
       } else {
-        setErrorMsg("Unauthorized account. Only 'licpravi@gmail.com' is authorized as administrator.");
+        setErrorMsg("Unauthorized account. Only authorized administrator emails are permitted.");
         await signOut(auth);
       }
     } catch (err: any) {
