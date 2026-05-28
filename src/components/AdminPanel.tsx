@@ -247,7 +247,7 @@ export function AdminPanel({
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Default security passcode is 2026, fallback husky@123 is also accepted
-    if (passcode === "husky@123") {
+    if (passcode === "2026" || passcode === "husky@123") {
       onSetAdminActive(true);
       setErrorMsg("");
       setPasscode("");
