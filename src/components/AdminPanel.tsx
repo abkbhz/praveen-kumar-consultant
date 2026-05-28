@@ -267,7 +267,7 @@ export function AdminPanel({
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      if (user?.email === "abhinavkrishna3071@gmail.com") {
+      if (user?.email === "abhinavkrishna3071@gmail.com" || user?.email === "licpravi@gmail.com") {
         onSetAdminActive(true);
       } else {
         setErrorMsg("Unauthorized account. Only 'abhinavkrishna3071@gmail.com' is authorized as administrator.");
